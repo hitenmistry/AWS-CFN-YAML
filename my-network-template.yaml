@@ -1,10 +1,23 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: VPC in London
+Parameters:
+  VPCCIDR:
+    Type: String
+    Default: "10.17.0.0/16"
+    Description: The CIDR range to assign to the VPC.
+  SubnetAZ:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: eu-west-2b
+    Description: The AZ to assign to the subnet.
+  SubnetCIDR:
+    Type: String
+    Default: "10.17.1.0/24"
+    Description: The CIDR range to assign to the subnet.
 Resources:
   MyVPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: "10.17.0.0/16"
+      CidrBlock: !Ref VPCCIDR
       InstanceTenancy: default
       Tags:
         - Key: Name
@@ -14,8 +27,8 @@ Resources:
   MySubnet2b:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: eu-west-2b
-      CidrBlock: "10.17.1.0/24"
+      AvailabilityZone: !Ref SubnetAZ
+      CidrBlock: !Ref SubnetCIDR
       Tags:
         - Key: Name
           Value: MySubnet2b
